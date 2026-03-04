@@ -1,0 +1,19 @@
+[Unit]
+Description=Generador de reporte de fallos críticos (oneshot)
+After=network.target
+
+[Service]
+Type=oneshot
+# Ajusta el usuario si no quieres ejecutar como root
+User=root
+Group=root
+WorkingDirectory=/opt/curso-linux/procesos-linux
+# Fichero de configuración con variables (RECIPIENTS, SMTP_...)
+EnvironmentFile=/etc/default/critical_report
+# Ejecuta el script; el archivo de configuración debe definir RECIPIENTS
+ExecStart=/usr/bin/env python3 /opt/curso-linux/procesos-linux/critical_report.py --to "$RECIPIENTS" --attach-pdf
+Nice=10
+KillMode=process
+
+[Install]
+WantedBy=timers.target

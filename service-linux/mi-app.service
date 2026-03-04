@@ -1,0 +1,24 @@
+[Unit]
+Description=Plantilla: servicio Python (mi-app)
+After=network.target
+
+[Service]
+Type=simple
+# Cambia a un usuario dedicado en producción
+User=miusuario
+Group=miusuario
+WorkingDirectory=/opt/mi-app
+EnvironmentFile=/etc/default/mi-app
+# Ejecuta el intérprete del venv y el script principal
+ExecStart=/opt/mi-app/venv/bin/python /opt/mi-app/run.py --to "$RECIPIENTS"
+Restart=on-failure
+RestartSec=5
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=yes
+NoNewPrivileges=yes
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

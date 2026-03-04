@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer diario para generar reporte de fallos críticos
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+# RandomizedDelaySec=30m
+
+[Install]
+WantedBy=timers.target
