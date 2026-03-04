@@ -12,10 +12,13 @@ Este repositorio contiene notas, ejemplos y scripts para administración, monito
   - [Instrucciones rápidas para login_report](procesos-linux/README-login-report.md)
 
 - **Seguridad-linux/**
-- **Seguridad-linux/**
   - [Hardening sysctl (kernel)](Seguridad-linux/linux-kernel-sysctl-hardening.md)
   - [Nginx notes](Seguridad-linux/nginx.md)
   - [Seguridad: resumen](Seguridad-linux/README.md)
+
+- **nginx-linux/**
+  - [Apps y probes de seguridad (resumen)](nginx-linux/apps-probe-security.md)
+  - [Apps y probes — versión extendida](nginx-linux/apps-probe-security-extended.md)
 
 -- **service-linux/**
   - [Configurar servicio Python](service-linux/config-service-py.md)
