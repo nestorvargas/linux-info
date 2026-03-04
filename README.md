@@ -32,5 +32,42 @@ Este repositorio contiene notas, ejemplos y scripts para administración, monito
   - [stdin/stdout/stderr y redirecciones](std-linux/commands-linux.md)
 
 ## Uso rápido
-- Ve a `procesos-linux/` para scripts operativos y ejemplos de monitorización.
-- Revisa `Seguridad-linux/linux-kernel-sysctl-hardening.md` para recomendaciones de `sysctl`.
+
+- **Instalar dependencias (para scripts Python)**
+
+  ```bash
+  pip install --user -r procesos-linux/requirements.txt
+  ```
+
+- **Generar reporte de inicios de sesión (PDF)**
+
+  Ejecuta:
+
+  ```bash
+  python3 procesos-linux/login_report.py --output /tmp/inicios_sesion.pdf
+  ```
+
+- **Generar y enviar reporte de fallos críticos**
+
+  Ejecuta (opcionalmente con `--email`):
+
+  ```bash
+  python3 procesos-linux/critical_report.py --email admin@example.com
+  ```
+
+- **Instalar ejemplos de servicio (systemd)**
+
+  Copia `service-linux/mi-app.service` a `/etc/systemd/system/` y `service-linux/mi-app.env` a `/etc/default/mi-app`, luego:
+
+  ```bash
+  sudo systemctl daemon-reload
+  sudo systemctl enable --now mi-app.service
+  ```
+
+- **Comprobaciones rápidas**
+
+  - Revisar servicios fallidos: `systemctl --failed`
+  - Revisar logs recientes: `journalctl -p err -b --no-pager`
+  - Ver procesos: `ps aux | grep <proceso>` o `htop`
+
+Si quieres que incluya ejemplos de crontab, unidades systemd con rutas absolutas o instrucciones para instalar en una distribución concreta (Debian/Ubuntu, CentOS), dime cuál y lo adapto.
