@@ -34,6 +34,11 @@ Este repositorio contiene notas, ejemplos y scripts para administración, monito
 -- **std-linux/**
   - [stdin/stdout/stderr y redirecciones](std-linux/commands-linux.md)
 
+- **config-nginx/**
+  - [sites-qa.conf — configuración Nginx multi-proyecto QA](config-nginx/sites-qa.conf)
+  - [qa-status.html — reporte de estado de sitios QA](config-nginx/qa-status.html)
+  - [qa-status.pdf — reporte PDF](config-nginx/qa-status.pdf)
+
 ## Uso rápido
 
 - **Instalar dependencias (para scripts Python)**

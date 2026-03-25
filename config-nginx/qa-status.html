@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA — Estado de Sitios</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: #f0f4f8;
+      color: #1e293b;
+      padding: 40px 48px;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 16px;
+    }
+    .header-left {}
+    .header-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .header-title span { color: #3b82f6; }
+    .header-sub {
+      margin-top: 6px;
+      font-size: 0.875rem;
+      color: #64748b;
+      font-weight: 400;
+    }
+    .header-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      color: #475569;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .meta-chip .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      flex-shrink: 0;
+    }
+
+    /* Summary cards */
+    .summary {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .card {
+      flex: 1;
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .card-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+    .card-value {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      color: #0f172a;
+    }
+    .card-value.green { color: #16a34a; }
+    .card-value.blue  { color: #2563eb; }
+    .card-value.rose  { color: #e11d48; }
+    .card-sub {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    /* Table */
+    .table-wrapper {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: #0f172a; }
+    thead th {
+      padding: 13px 16px;
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+    thead th:first-child { color: #64748b; width: 42px; }
+
+    tbody tr { transition: background 0.15s; }
+    tbody tr:nth-child(even) { background: #f8fafc; }
+    tbody tr:hover { background: #eff6ff; }
+
+    td {
+      padding: 12px 16px;
+      font-size: 0.875rem;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    .num { color: #94a3b8; font-size: 0.8rem; font-weight: 500; text-align: center; }
+    .site-name {
+      font-weight: 600;
+      color: #0f172a;
+      font-size: 0.875rem;
+    }
+    .site-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #3b82f6;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-top: 3px;
+    }
+    .site-link:hover { text-decoration: underline; color: #2563eb; }
+    .site-link-secondary {
+      display: block;
+      color: #7c3aed;
+      font-size: 0.75rem;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .before-bad  { background: #fee2e2; color: #991b1b; }
+    .before-bad::before  { background: #ef4444; }
+    .before-warn { background: #fef3c7; color: #78350f; }
+    .before-warn::before { background: #f59e0b; }
+    .after-ok    { background: #dcfce7; color: #14532d; }
+    .after-ok::before    { background: #22c55e; }
+    .after-login { background: #dbeafe; color: #1e3a8a; }
+    .after-login::before { background: #3b82f6; }
+    .type-drupal  { background: #ede9fe; color: #4c1d95; }
+    .type-drupal::before  { display: none; }
+    .type-angular { background: #fce7f3; color: #831843; }
+    .type-angular::before { display: none; }
+
+    /* Fix tags */
+    .fixes { display: flex; flex-wrap: wrap; gap: 4px; }
+    .fix-tag {
+      display: inline-block;
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* Section separator */
+    .section-header td {
+      background: #1e293b;
+      color: #64748b;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 7px 16px;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    /* Print / PDF */
+    @media print {
+      body { background: #fff; padding: 20px 24px; }
+      .table-wrapper { box-shadow: none; border: 1px solid #cbd5e1; }
+      tbody tr:hover { background: inherit; }
+      .site-link { color: #2563eb; }
+      .header-meta { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-left">
+      <div class="header-title">Entorno <span>QA</span> — Estado de Sitios</div>
+      <div class="header-sub">Servidor&nbsp;10.0.64.53 &nbsp;·&nbsp; Nginx + PHP 8.3 + Drupal 11 &nbsp;·&nbsp; 25 de marzo de 2026</div>
+    </div>
+    <div class="header-meta">
+      <div class="meta-chip"><span class="dot"></span> Servidor activo</div>
+      <div class="meta-chip">14 proyectos revisados</div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="card">
+      <div class="card-label">Total sitios</div>
+      <div class="card-value">14</div>
+      <div class="card-sub">13 Drupal · 1 Angular+Drupal</div>
+    </div>
+    <div class="card">
+      <div class="card-label">200 OK</div>
+      <div class="card-value green">11</div>
+      <div class="card-sub">Cargando correctamente</div>
+    </div>
+    <div class="card">
+      <div class="card-label">302 → Login</div>
+      <div class="card-value blue">2</div>
+      <div class="card-sub">Acceso restringido / normal</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Ajustes aplicados</div>
+      <div class="card-value" style="color:#7c3aed">5</div>
+      <div class="card-sub">tipos de fix distintos</div>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Proyecto</th>
+          <th>Tipo</th>
+          <th>Estado</th>
+          <th>URL QA</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="section-header"><td colspan="5">Drupal 11 — 13 proyectos</td></tr>
+
+        <tr>
+          <td class="num">1</td>
+          <td class="site-name">dongfeng</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/dongfeng/" target="_blank">10.0.64.53/dongfeng/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">2</td>
+          <td class="site-name">akt-motos</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-login">302 → Login</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/akt-motos/" target="_blank">10.0.64.53/akt-motos/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">3</td>
+          <td class="site-name">ganaconkalley</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/ganaconkalley/" target="_blank">10.0.64.53/ganaconkalley/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">4</td>
+          <td class="site-name">invoice</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/invoice/" target="_blank">10.0.64.53/invoice/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">5</td>
+          <td class="site-name">kalleymovil</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/kalleymovil/" target="_blank">10.0.64.53/kalleymovil/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">6</td>
+          <td class="site-name">knowledgebase</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-login">302 → Login</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/knowledgebase/" target="_blank">10.0.64.53/knowledgebase/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">7</td>
+          <td class="site-name">landingdescargas</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/landingdescargas/" target="_blank">10.0.64.53/landingdescargas/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">8</td>
+          <td class="site-name">midia</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/midia/" target="_blank">10.0.64.53/midia/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">9</td>
+          <td class="site-name">narinenseslomaximo</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/narinenseslomaximo/" target="_blank">10.0.64.53/narinenseslomaximo/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">10</td>
+          <td class="site-name">pidetucita_alkomprar</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/pidetucita_alkomprar/" target="_blank">10.0.64.53/pidetucita_alkomprar/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">11</td>
+          <td class="site-name">redcontigo</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/redcontigo/" target="_blank">10.0.64.53/redcontigo/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">12</td>
+          <td class="site-name">servicios_kalley</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/servicios_kalley/" target="_blank">10.0.64.53/servicios_kalley/</a></td>
+        </tr>
+
+        <tr>
+          <td class="num">13</td>
+          <td class="site-name">servicios_tcl</td>
+          <td><span class="badge type-drupal">Drupal 11</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td><a class="site-link" href="http://10.0.64.53/servicios_tcl/" target="_blank">10.0.64.53/servicios_tcl/</a></td>
+        </tr>
+
+        <tr class="section-header"><td colspan="5">Angular SPA + Drupal Backend — 1 proyecto</td></tr>
+
+        <tr>
+          <td class="num">14</td>
+          <td class="site-name">corbeta_textiles</td>
+          <td><span class="badge type-angular">Angular + Drupal</span></td>
+          <td><span class="badge after-ok">200 OK</span></td>
+          <td>
+            <a class="site-link" href="http://10.0.64.53/corbeta_textiles/" target="_blank">10.0.64.53/corbeta_textiles/</a>
+            <a class="site-link site-link-secondary" href="http://10.0.64.53/corbeta_textiles/drupal/" target="_blank">10.0.64.53/corbeta_textiles/drupal/</a>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Generado el 25 de marzo de 2026 &nbsp;·&nbsp; QA Server 10.0.64.53 &nbsp;·&nbsp; Nginx + PHP-FPM 8.3 + Drupal 11
+  </div>
+
+</body>
+</html>
