@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA — Proyectos disponibles</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: #f0f4f8;
+      color: #1e293b;
+      padding: 40px 48px;
+      min-height: 100vh;
+    }
+
+    /* ─── Header ─── */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 16px;
+    }
+    .header-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .header-title span { color: #3b82f6; }
+    .header-sub {
+      margin-top: 6px;
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+    .header-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      color: #475569;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .meta-chip .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      flex-shrink: 0;
+    }
+
+    /* ─── Summary cards ─── */
+    .summary {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .card {
+      flex: 1;
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .card-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+    .card-value {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      color: #0f172a;
+    }
+    .card-value.blue   { color: #2563eb; }
+    .card-value.purple { color: #7c3aed; }
+    .card-value.green  { color: #16a34a; }
+    .card-sub {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    /* ─── Section label ─── */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #94a3b8;
+      margin-bottom: 12px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
+
+    /* ─── Grid ─── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    /* ─── Project card ─── */
+    .project-card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      padding: 18px 20px;
+      transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .project-card:hover {
+      box-shadow: 0 6px 20px rgba(59,130,246,0.13);
+      border-color: #93c5fd;
+      transform: translateY(-1px);
+    }
+    .project-card.featured {
+      border-color: #c4b5fd;
+      background: linear-gradient(135deg, #faf5ff 0%, #fff 60%);
+    }
+    .project-card.featured:hover {
+      box-shadow: 0 6px 20px rgba(124,58,237,0.13);
+      border-color: #a78bfa;
+    }
+
+    .project-num {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+    .project-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+    .project-path {
+      font-size: 0.78rem;
+      color: #3b82f6;
+      font-weight: 500;
+      margin-bottom: 10px;
+      word-break: break-all;
+      font-family: 'Courier New', monospace;
+    }
+    .project-sublink {
+      display: block;
+      font-size: 0.75rem;
+      color: #7c3aed;
+      font-weight: 500;
+      margin-top: 3px;
+      font-family: 'Courier New', monospace;
+    }
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    /* ─── Badges ─── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .type-drupal        { background: #ede9fe; color: #4c1d95; }
+    .type-drupal-admin  { background: #dbeafe; color: #1e3a8a; }
+    .type-angular       { background: #fce7f3; color: #831843; }
+
+    .arrow {
+      font-size: 1rem;
+      color: #cbd5e1;
+      transition: color 0.15s, transform 0.15s;
+    }
+    .project-card:hover .arrow { color: #3b82f6; transform: translateX(3px); }
+    .project-card.featured:hover .arrow { color: #7c3aed; }
+
+    /* ─── Footer ─── */
+    .footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      padding-top: 8px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 24px 20px; }
+      .summary { flex-wrap: wrap; }
+      .summary .card { min-width: calc(50% - 7px); }
+      .header { flex-direction: column; }
+      .header-meta { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <div class="header-title">Entorno <span>QA</span> — Proyectos</div>
+      <div class="header-sub">Servidor&nbsp;10.0.64.53 &nbsp;·&nbsp; Nginx + PHP-FPM 8.3 · Oracle Linux 8.4</div>
+    </div>
+    <div class="header-meta">
+      <div class="meta-chip"><span class="dot"></span> Servidor activo</div>
+      <div class="meta-chip">15 proyectos</div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="card">
+      <div class="card-label">Total sitios</div>
+      <div class="card-value">15</div>
+      <div class="card-sub">en este servidor</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Drupal</div>
+      <div class="card-value blue">14</div>
+      <div class="card-sub">13 estándar + 1 legacy</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Angular + Drupal</div>
+      <div class="card-value purple">1</div>
+      <div class="card-sub">SPA con backend Drupal</div>
+    </div>
+  </div>
+
+  <!-- ── Drupal Estándar ── -->
+  <div class="section-label">Drupal — 13 proyectos</div>
+
+  <div class="grid">
+
+    <a class="project-card" href="/dongfeng/">
+      <div class="project-num">#01</div>
+      <div class="project-name">dongfeng</div>
+      <div class="project-path">/dongfeng/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/agendatucita-alkomprar/">
+      <div class="project-num">#02</div>
+      <div class="project-name">agendatucita-alkomprar</div>
+      <div class="project-path">/agendatucita-alkomprar/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/ganaconkalley/">
+      <div class="project-num">#03</div>
+      <div class="project-name">ganaconkalley</div>
+      <div class="project-path">/ganaconkalley/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/invoice/">
+      <div class="project-num">#04</div>
+      <div class="project-name">invoice</div>
+      <div class="project-path">/invoice/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/kalleymovil/">
+      <div class="project-num">#05</div>
+      <div class="project-name">kalleymovil</div>
+      <div class="project-path">/kalleymovil/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/knowledgebase/">
+      <div class="project-num">#06</div>
+      <div class="project-name">knowledgebase</div>
+      <div class="project-path">/knowledgebase/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/landingdescargas/">
+      <div class="project-num">#07</div>
+      <div class="project-name">landingdescargas</div>
+      <div class="project-path">/landingdescargas/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/midia/">
+      <div class="project-num">#08</div>
+      <div class="project-name">midia</div>
+      <div class="project-path">/midia/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/narinenseslomaximo/">
+      <div class="project-num">#09</div>
+      <div class="project-name">narinenseslomaximo</div>
+      <div class="project-path">/narinenseslomaximo/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/pidetucita_alkomprar/">
+      <div class="project-num">#10</div>
+      <div class="project-name">pidetucita_alkomprar</div>
+      <div class="project-path">/pidetucita_alkomprar/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/redcontigo/">
+      <div class="project-num">#11</div>
+      <div class="project-name">redcontigo</div>
+      <div class="project-path">/redcontigo/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/servicios_kalley/">
+      <div class="project-num">#12</div>
+      <div class="project-name">servicios_kalley</div>
+      <div class="project-path">/servicios_kalley/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+    <a class="project-card" href="/servicios_tcl/">
+      <div class="project-num">#13</div>
+      <div class="project-name">servicios_tcl</div>
+      <div class="project-path">/servicios_tcl/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal">Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ── Corbeta Admin ── -->
+  <div class="section-label">Drupal Admin — 1 proyecto</div>
+
+  <div class="grid">
+
+    <a class="project-card" href="/corbeta_textiles_admin/">
+      <div class="project-num">#14</div>
+      <div class="project-name">corbeta_textiles_admin</div>
+      <div class="project-path">/corbeta_textiles_admin/</div>
+      <div class="project-footer">
+        <span class="badge type-drupal-admin">Drupal Admin</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ── Angular + Drupal ── -->
+  <div class="section-label">Angular SPA + Drupal Backend — 1 proyecto</div>
+
+  <div class="grid">
+
+    <a class="project-card featured" href="/corbeta_textiles/">
+      <div class="project-num">#15</div>
+      <div class="project-name">corbeta_textiles</div>
+      <div class="project-path">
+        /corbeta_textiles/
+        <span class="project-sublink">/corbeta_textiles_admin/ ← panel admin</span>
+      </div>
+      <div class="project-footer">
+        <span class="badge type-angular">Angular + Drupal</span>
+        <span class="arrow">&#8594;</span>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="footer">
+    QA Server &nbsp;·&nbsp; 10.0.64.53 &nbsp;·&nbsp; Nginx + PHP-FPM 8.3
+  </div>
+
+</body>
+</html>
